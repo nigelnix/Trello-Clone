@@ -1,9 +1,9 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from "react";
 import AuthForm from "../components/AuthForm";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import Layout from "../components/Layout";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -28,12 +28,14 @@ const LoginPage = () => {
   };
 
   return (
-    <AuthForm
-      type="login"
-      onSubmit={handleLogin}
-      formData={formData}
-      setFormData={setFormData}
-    />
+    <Layout>
+      <AuthForm
+        type="login"
+        onSubmit={handleLogin}
+        formData={formData}
+        setFormData={setFormData}
+      />
+    </Layout>
   );
 };
 

@@ -4,6 +4,7 @@ import AuthForm from "../components/AuthForm";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import Layout from "../components/Layout";
 
 const RegisterPage = () => {
   const { login } = useAuth();
@@ -27,12 +28,14 @@ const RegisterPage = () => {
   };
 
   return (
-    <AuthForm
-      type="register"
-      onSubmit={handleRegister}
-      formData={formData}
-      setFormData={setFormData}
-    />
+    <Layout>
+      <AuthForm
+        type="register"
+        onSubmit={handleRegister}
+        formData={formData}
+        setFormData={setFormData}
+      />
+    </Layout>
   );
 };
 
