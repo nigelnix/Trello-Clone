@@ -1,16 +1,17 @@
-// src/App.jsx
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectRoute";
+import { lazy } from "react";
+
+// Lazy-loaded pages
+const HomePage = lazy(() => import("./pages/HomePage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 
 export default function App() {
   return (
     <Routes>
-      {/* The Layout component will now act as a wrapper for these nested routes */}
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -24,7 +25,6 @@ export default function App() {
           }
         />
       </Route>
-      {/* If you had routes that should NOT have the layout, they would go here outside the <Route element={<Layout />}> */}
     </Routes>
   );
 }
