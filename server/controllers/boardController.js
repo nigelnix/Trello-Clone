@@ -33,6 +33,13 @@ export const getBoardById = async (req, res) => {
     const board = await Board.findOne({
       _id: req.params.id,
       owner: req.user._id,
+    }).populate({
+      // Populate the 'columns' field
+      path: "columns",
+      populate: {
+        // And within each column, populate the 'cards' field
+        path: "cards",
+      },
     });
     if (!board)
       return res.status(404).json({

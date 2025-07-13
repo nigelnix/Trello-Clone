@@ -1,4 +1,3 @@
-// src/pages/RegisterPage.jsx
 import React, { useState } from "react";
 import AuthForm from "../components/AuthForm";
 import axios from "../api/axios";
