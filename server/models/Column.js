@@ -20,6 +20,12 @@ const columnSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    cards: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Card",
+      },
+    ],
     order: {
       type: Number,
       default: 0,

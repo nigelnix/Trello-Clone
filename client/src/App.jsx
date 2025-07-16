@@ -5,7 +5,7 @@ import ProtectedRoute from "./components/ProtectRoute";
 
 // Lazy-loaded pages
 import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
+import BoardsOverviewPage from "./pages/BoardsOverviewPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
@@ -17,10 +17,19 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
-          path="/dashboard"
+          path="/boards"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <BoardsOverviewPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/boards/:boardId"
+          element={
+            <ProtectedRoute>
+              <BoardDetailPage />
             </ProtectedRoute>
           }
         />
