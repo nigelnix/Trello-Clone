@@ -10,7 +10,17 @@ import cardRoutes from "./routes/card.js";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// --- START CORS CONFIGURATION ---
+const corsOptions = {
+  origin: "http://localhost:5173", // <--- IMPORTANT: Specify your frontend's exact origin
+  credentials: true, // <--- IMPORTANT: Allow sending cookies/authorization headers
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // <--- Allow all necessary HTTP methods
+  allowedHeaders: "Content-Type,Authorization", // <--- Allow these headers
+};
+app.use(cors(corsOptions));
+// --- END CORS CONFIGURATION ---
+
 app.use(express.json());
 
 // Test route

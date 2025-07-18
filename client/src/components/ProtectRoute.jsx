@@ -2,11 +2,24 @@ import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth(); // <--- Now 'loading' will be provided
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  console.log(
+    "ProtectedRoute: Rendered. isAuthenticated:",
+    isAuthenticated,
+    "loading:",
+    loading
+  ); // NEW LOG
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  // If AuthProvider is still determining authentication status, show a loading message
+  if (loading) {
+    return (
+      <div className="text-center mt-10 text-gray-700">Authenticating...</div>
+    );
+  }
+
+  // If not loading, then check if authenticated
+  return isAuthenticated ? children : <Navigate to="/login" replace />; // Use replace to prevent back button issues
 };
 
 export default ProtectedRoute;

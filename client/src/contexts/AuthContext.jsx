@@ -1,66 +1,89 @@
-import { useState, useEffect, useMemo } from "react";
-import { AuthContext } from "./auth-context";
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "../api/axios";
+
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [authToken, setAuthToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true); // <--- ADD THIS LOADING STATE
+
+  const isAuthenticated = !!user && !!token;
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("authToken");
-    const storedUser = localStorage.getItem("user");
+    console.log("AuthProvider useEffect - Token state changed:", token);
+    // Set loading to true at the start of the effect
+    setLoading(true); // <--- Set loading true when token state changes
 
-    if (storedToken && storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-        setAuthToken(storedToken);
-      } catch {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("user");
+    if (token) {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+          console.log(
+            "AuthProvider useEffect - User set from localStorage:",
+            JSON.parse(storedUser)
+          );
+        } catch (error) {
+          console.error("Failed to parse user from localStorage:", error);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setToken(null);
+          setUser(null);
+        }
+      } else {
+        // If token exists but user data doesn't, it might be an invalid state.
+        // Consider logging out or re-fetching user data. For now, we'll just assume user should be null.
+        setUser(null);
       }
-    }
-
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (authToken) {
-      localStorage.setItem("authToken", authToken);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log("AuthProvider useEffect - Axios Authorization header SET.");
     } else {
-      localStorage.removeItem("authToken");
+      delete axios.defaults.headers.common["Authorization"];
+      console.log(
+        "AuthProvider useEffect - Axios Authorization header CLEARED."
+      );
+      setUser(null); // Ensure user is null if no token
     }
-  }, [authToken]);
+    setLoading(false); // <--- Set loading false once auth state is determined
+    console.log("AuthProvider useEffect - Loading set to false.");
+  }, [token]);
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
-  const login = (userData, token) => {
+  const login = (userData, authToken) => {
+    console.log(
+      "AuthProvider: login() received userData:",
+      userData,
+      "authToken:",
+      authToken
+    );
+    // When logging in, we are no longer loading authentication state
+    setLoading(false); // <--- Set loading false immediately on login
     setUser(userData);
-    setAuthToken(token);
+    setToken(authToken);
+    localStorage.setItem("token", authToken);
+    localStorage.setItem("user", JSON.stringify(userData));
+    axios.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+    console.log("AuthProvider: Token and user set in state and localStorage.");
   };
 
   const logout = () => {
+    console.log("AuthProvider: logout() - User and token cleared.");
+    setLoading(false); // <--- Set loading false immediately on logout
     setUser(null);
-    setAuthToken(null);
-    localStorage.clear();
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
   };
 
-  const value = useMemo(
-    () => ({
-      user,
-      authToken,
-      isAuthenticated: !!authToken,
-      loading,
-      login,
-      logout,
-    }),
-    [user, authToken, loading]
-  );
+  // Include loading in the context value
+  const value = { user, token, isAuthenticated, loading, login, logout }; // <--- ADD loading here
+
+  console.log("AuthProvider: Providing context value:", value);
+  console.log("AuthProvider: Current user in state:", user);
+  console.log("AuthProvider: Current token in state:", token);
+  console.log("AuthProvider: isAuthenticated:", isAuthenticated);
+  console.log("AuthProvider: Current loading state:", loading); // <--- NEW LOG
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

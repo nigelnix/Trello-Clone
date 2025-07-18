@@ -7,8 +7,8 @@ import axios from "../api/axios";
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 // Import placeholder components for now, you'll create/update these next
-import Column from "../components/Board/Column";
-import AddColumnForm from "../components/Board/AddColumnForm";
+import Column from "../components/Board/Column.jsx";
+import AddColumnForm from "../components/Board/AddColumnForm.jsx";
 
 const BoardDetailPage = () => {
   const { boardId } = useParams(); // Get boardId from the URL (e.g., /boards/123)

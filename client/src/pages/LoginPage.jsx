@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/AuthForm.jsx"; // Ensure .jsx extension
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Layout from "../components/Layout";
+// import Layout from "../components/Layout.jsx"; // <-- REMOVE THIS IMPORT
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -15,27 +15,32 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return alert("Email and password are required.");
+      return alert("Email and password are required."); // Replace with better UX later
     }
 
     try {
-      const res = await axios.post("/auth/login", formData);
+      // Ensure this matches your backend route: /api/auth/login
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
       login(res.data.user, res.data.token);
-      navigate("/dashboard");
+      navigate("/boards"); // Redirect to the boards overview page
     } catch (err) {
-      alert(err.response?.data?.msg || "Login failed");
+      alert(err.response?.data?.msg || "Login failed"); // Replace with better UX later
+      console.error("Login error:", err);
     }
   };
 
   return (
-    <Layout>
-      <AuthForm
-        type="login"
-        onSubmit={handleLogin}
-        formData={formData}
-        setFormData={setFormData}
-      />
-    </Layout>
+    // <Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
+    <AuthForm
+      type="login"
+      onSubmit={handleLogin}
+      formData={formData}
+      setFormData={setFormData}
+    />
+    // </Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
   );
 };
 
