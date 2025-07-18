@@ -25,15 +25,15 @@ const RegisterPage = () => {
       console.log(
         "RegisterPage: Registration successful! Response data:",
         res.data
-      ); // ADD THIS LOG
-      login(res.data.user, res.data.token); // This is the critical line
-      console.log("RegisterPage: login() function called."); // ADD THIS LOG
+      );
+      login(res.data.user, res.data.token);
+      console.log("RegisterPage: login() function called.");
       navigate("/boards");
     } catch (err) {
       console.error(
         "RegisterPage: Registration error:",
         err.response?.data || err.message
-      ); // More detailed error log
+      );
       alert(err.response?.data?.msg || "Registration failed");
     }
   };

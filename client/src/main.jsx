@@ -7,15 +7,13 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter // <--- BrowserRouter is now OUTSIDE AuthProvider
+    <BrowserRouter
       future={{
         v7_startTransition: true,
         v7_relativeSplatPath: true,
       }}
     >
       <AuthProvider>
-        {" "}
-        {/* <--- AuthProvider is now INSIDE BrowserRouter */}
         <App />
       </AuthProvider>
     </BrowserRouter>

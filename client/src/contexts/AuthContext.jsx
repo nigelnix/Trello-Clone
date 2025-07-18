@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     console.log("AuthProvider useEffect - Token state changed:", token);
     // Set loading to true at the start of the effect
-    setLoading(true); // <--- Set loading true when token state changes
+    setLoading(true);
 
     if (token) {
       const storedUser = localStorage.getItem("user");

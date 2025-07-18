@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import AuthForm from "../components/AuthForm.jsx"; // Ensure .jsx extension
+import AuthForm from "../components/AuthForm.jsx";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-// import Layout from "../components/Layout.jsx"; // <-- REMOVE THIS IMPORT
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -19,7 +18,6 @@ const LoginPage = () => {
     }
 
     try {
-      // Ensure this matches your backend route: /api/auth/login
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
         formData
@@ -33,14 +31,12 @@ const LoginPage = () => {
   };
 
   return (
-    // <Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
     <AuthForm
       type="login"
       onSubmit={handleLogin}
       formData={formData}
       setFormData={setFormData}
     />
-    // </Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
   );
 };
 

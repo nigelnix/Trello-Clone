@@ -43,15 +43,8 @@ export default function App() {
             <RegisterPage />
           </Layout>
         }
-      />{" "}
-      {/* Wrap RegisterPage with Layout */}
-      {/* Protected Routes - these need both AuthProvider and Layout */}
-      {/* The ProtectedRoute itself should render an <Outlet /> */}
+      />
       <Route element={<ProtectedRoute />}>
-        {/* Now, the components rendered by Outlet will be inside ProtectedRoute,
-            which is inside AuthProvider (from main.js).
-            So, we can wrap the content of these pages with Layout.
-        */}
         <Route
           path="/boards"
           element={

@@ -1,10 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Layout from '../components/Layout.jsx'; // <-- REMOVE THIS IMPORT
 
 const HomePage = () => {
   return (
-    // <Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center px-4">
       <h1 className="text-4xl font-bold mb-6 text-blue-700">
         Welcome to Your App!
@@ -27,7 +25,6 @@ const HomePage = () => {
         </Link>
       </div>
     </div>
-    // </Layout> {/* <-- REMOVE THIS REDUNDANT LAYOUT WRAPPER */}
   );
 };
 
