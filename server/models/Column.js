@@ -8,7 +8,8 @@ const columnSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Column description is required"],
+      required: false,
+      default: "",
     },
     board: {
       type: mongoose.Schema.Types.ObjectId,

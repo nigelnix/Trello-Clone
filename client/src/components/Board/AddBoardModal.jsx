@@ -4,22 +4,20 @@ const AddBoardModal = ({ isOpen, onClose, onCreate }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // This function handles the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) {
       alert("Board title is required.");
       return;
     }
-    // Call the function passed down from the parent (BoardsOverviewPage)
-    // and pass the form data to it
     onCreate(title, description);
   };
 
-  // If the modal is not open, don't render anything
   if (!isOpen) {
     return null;
   }
+
+  console.log("AddBoardModal: Modal is rendering! isOpen is true."); // <--- KEEP THIS LOG
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">

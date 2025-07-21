@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 // We'll add react-beautiful-dnd imports later when we implement DND
@@ -115,65 +114,57 @@ const BoardDetailPage = () => {
   // --- Conditional Rendering for Loading, Error, and Not Found states ---
   if (loading) {
     return (
-      <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-xl text-gray-700">Loading board...</p>
-        </div>
-      </Layout>
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-700">Loading board...</p>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Layout>
-        <div className="min-h-screen p-8 text-red-600 flex items-center justify-center">
-          <p className="text-xl">Error: {error}</p>
-        </div>
-      </Layout>
+      <div className="min-h-screen p-8 text-red-600 flex items-center justify-center">
+        <p className="text-xl">Error: {error}</p>
+      </div>
     );
   }
 
   // If board is null after loading (e.g., 404 handled by redirect, but good defensive check)
   if (!board) {
     return (
-      <Layout>
-        <div className="min-h-screen p-8 text-gray-600 flex items-center justify-center">
-          <p className="text-xl">Board not found.</p>
-        </div>
-      </Layout>
+      <div className="min-h-screen p-8 text-gray-600 flex items-center justify-center">
+        <p className="text-xl">Board not found.</p>
+      </div>
     );
   }
 
   // --- Main Board Display ---
   return (
-    <Layout>
-      <div className="flex flex-col h-screen bg-blue-100 p-4">
-        <h1 className="text-3xl font-bold mb-4 text-blue-800">{board.title}</h1>
-        {/*
+    <div className="flex flex-col h-screen bg-blue-100 p-4">
+      <h1 className="text-3xl font-bold mb-4 text-blue-800">{board.title}</h1>
+      {/*
           DragDropContext will wrap your droppable areas (columns and cards).
           We'll add this when implementing DND.
           For now, we'll just render the columns directly.
         */}
-        <div className="flex overflow-x-auto overflow-y-hidden items-start h-full pb-4">
-          {board.columns.length > 0 ? (
-            board.columns.map((column, index) => (
-              <Column
-                key={column._id}
-                column={column}
-                index={index}
-                // Pass the card addition handler down to each Column
-                onAddCard={handleAddCardToColumn}
-              />
-            ))
-          ) : (
-            <p className="text-gray-600 mx-2">No columns yet. Add one!</p>
-          )}
+      <div className="flex overflow-x-auto overflow-y-hidden items-start h-full pb-4">
+        {board.columns.length > 0 ? (
+          board.columns.map((column, index) => (
+            <Column
+              key={column._id}
+              column={column}
+              index={index}
+              // Pass the card addition handler down to each Column
+              onAddCard={handleAddCardToColumn}
+            />
+          ))
+        ) : (
+          <p className="text-gray-600 mx-2">No columns yet. Add one!</p>
+        )}
 
-          {/* Add Column Form */}
-          <AddColumnForm onAddColumn={handleAddColumn} />
-        </div>
+        {/* Add Column Form */}
+        <AddColumnForm onAddColumn={handleAddColumn} />
       </div>
-    </Layout>
+    </div>
   );
 };
 

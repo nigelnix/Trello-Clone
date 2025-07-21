@@ -1,3 +1,4 @@
+// src/pages/BoardsOverviewPage.jsx
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
@@ -19,7 +20,9 @@ const BoardsOverviewPage = () => {
     "Loading:",
     loading,
     "Error:",
-    error
+    error,
+    "isModalOpen (initial):",
+    isModalOpen
   );
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const BoardsOverviewPage = () => {
       try {
         console.log(
           "BoardsOverviewPage useEffect: Attempting axios.get('/api/boards')..."
-        ); // NEW LOG
+        );
         const response = await axios.get("http://localhost:5000/api/boards");
         setBoards(response.data);
         console.log(
@@ -37,7 +40,7 @@ const BoardsOverviewPage = () => {
         );
       } catch (err) {
         setError(err.response?.data?.msg || "Failed to fetch boards.");
-        console.error("BoardsOverviewPage: Error fetching boards:", err); // NEW LOG
+        console.error("BoardsOverviewPage: Error fetching boards:", err);
         if (err.response && err.response.status === 401) {
           console.log(
             "BoardsOverviewPage useEffect: 401 received. Logging out."
@@ -51,7 +54,7 @@ const BoardsOverviewPage = () => {
     };
 
     fetchBoards();
-  }, [logout]); // Dependencies for useEffect
+  }, [logout]);
 
   const handleCreateBoard = async (boardTitle, boardDescription) => {
     try {
@@ -89,7 +92,6 @@ const BoardsOverviewPage = () => {
     );
   }
 
-  // This condition now correctly checks for an empty 'boards' array
   if (boards.length === 0 && !loading && !error) {
     return (
       <div className="min-h-screen p-8 text-gray-600 flex items-center justify-center flex-col">
@@ -98,7 +100,14 @@ const BoardsOverviewPage = () => {
           started!
         </p>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            console.log(
+              "Create New Board button clicked! Current isModalOpen:",
+              isModalOpen
+            );
+            setIsModalOpen(true);
+            console.log("isModalOpen after click (should be true):", true);
+          }}
           className="mt-6 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md"
         >
           + Create New Board
@@ -109,6 +118,13 @@ const BoardsOverviewPage = () => {
         >
           Logout
         </button>
+        {/* AddBoardModal is rendered here */}
+        <AddBoardModal
+          key="add-board-modal-empty-state" // <--- ADD THIS KEY
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onCreate={handleCreateBoard}
+        />
       </div>
     );
   }
@@ -119,7 +135,14 @@ const BoardsOverviewPage = () => {
       <p className="mb-6 text-lg">Welcome, {user?.username || "User"}!</p>
 
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          console.log(
+            "Create New Board button clicked! Current isModalOpen:",
+            isModalOpen
+          );
+          setIsModalOpen(true);
+          console.log("isModalOpen after click (should be true):", true);
+        }}
         className="mb-6 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md"
       >
         + Create New Board
@@ -138,7 +161,9 @@ const BoardsOverviewPage = () => {
         ))}
       </div>
 
+      {/* AddBoardModal is rendered here */}
       <AddBoardModal
+        key="add-board-modal-with-boards" // <--- ADD THIS KEY
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onCreate={handleCreateBoard}
