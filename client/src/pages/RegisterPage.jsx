@@ -9,15 +9,16 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    username: "", // <--- CHANGED from 'name' to 'username'
     email: "",
     password: "",
+    avatar: "", // <--- ADDED AVATAR FIELD
   });
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      console.log("RegisterPage: Attempting registration with data:", formData); // ADD THIS LOG
+      console.log("RegisterPage: Attempting registration with data:", formData);
       const res = await axios.post(
         "http://localhost:5000/api/auth/register",
         formData
@@ -28,7 +29,7 @@ const RegisterPage = () => {
       );
       login(res.data.user, res.data.token);
       console.log("RegisterPage: login() function called.");
-      navigate("/boards");
+      navigate("/boards"); // Redirect to the boards overview page
     } catch (err) {
       console.error(
         "RegisterPage: Registration error:",

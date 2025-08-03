@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const AuthForm = ({ type, onSubmit, formData, setFormData }) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const isLogin = type === "login";
 
   return (
@@ -14,43 +18,69 @@ const AuthForm = ({ type, onSubmit, formData, setFormData }) => {
         <form onSubmit={onSubmit} className="space-y-5">
           {!isLogin && (
             <div>
-              <label className="block text-sm mb-1">Name</label>
+              <label htmlFor="username" className="block text-sm mb-1">
+                Username
+              </label>{" "}
+              {/* Changed label htmlFor */}
               <input
                 type="text"
+                id="username" // Changed id
+                name="username" // Changed name to 'username' to match backend User model
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                value={formData.username || ""} // Access formData.username
+                onChange={handleChange}
                 required
               />
             </div>
           )}
           <div>
-            <label className="block text-sm mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm mb-1">
+              Email
+            </label>{" "}
+            {/* Added htmlFor */}
             <input
               type="email"
+              id="email" // Added id
+              name="email" // Added name
               className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={handleChange}
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm mb-1">
+              Password
+            </label>{" "}
+            {/* Added htmlFor */}
             <input
               type="password"
+              id="password" // Added id
+              name="password" // Added name
               className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
+              onChange={handleChange}
               required
             />
           </div>
+
+          {!isLogin && ( // Only show avatar field for registration
+            <div>
+              <label htmlFor="avatar" className="block text-sm mb-1">
+                Avatar URL (Optional)
+              </label>
+              <input
+                type="url" // Use type="url" for better input validation
+                id="avatar"
+                name="avatar"
+                className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="e.g., https://example.com/your-avatar.jpg"
+                value={formData.avatar || ""}
+                onChange={handleChange}
+              />
+            </div>
+          )}
 
           <button
             type="submit"

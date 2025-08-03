@@ -1,26 +1,22 @@
 import React, { useState } from "react";
 
-// The AddColumnForm component receives the 'onAddColumn' function from the BoardDetailPage
 const AddColumnForm = ({ onAddColumn }) => {
   const [title, setTitle] = useState("");
-  const [isAdding, setIsAdding] = useState(false); // State to toggle form visibility
+  const [isAdding, setIsAdding] = useState(false);
 
-  // Handles the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim()) {
-      // Ensure title is not empty
-      onAddColumn(title); // Call the parent's function with the column title
-      setTitle(""); // Clear the title input
-      setIsAdding(false); // Hide the form after submission
+      onAddColumn(title);
+      setTitle("");
+      setIsAdding(false);
     } else {
-      // If the user tries to submit an empty title, you might want to show a validation message
-      alert("Column title cannot be empty."); // Basic validation
+      alert("Column title cannot be empty.");
     }
   };
 
   return (
-    <div className="bg-gray-200 rounded-lg p-3 mx-2 flex-shrink-0 w-72 h-fit shadow-md">
+    <div className="flex-shrink-0 w-72 bg-gray-100 rounded-lg p-3 mx-2 shadow-md">
       {isAdding ? (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <input
@@ -30,12 +26,11 @@ const AddColumnForm = ({ onAddColumn }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onBlur={() => {
-              // Hide form if title is empty and input loses focus
               if (!title.trim()) {
                 setIsAdding(false);
               }
             }}
-            autoFocus // Automatically focus when the form appears
+            autoFocus
           />
           <div className="flex justify-end space-x-2">
             <button
@@ -47,8 +42,8 @@ const AddColumnForm = ({ onAddColumn }) => {
             <button
               type="button"
               onClick={() => {
-                setTitle(""); // Clear input
-                setIsAdding(false); // Hide the form
+                setTitle("");
+                setIsAdding(false);
               }}
               className="px-3 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
             >
@@ -58,8 +53,8 @@ const AddColumnForm = ({ onAddColumn }) => {
         </form>
       ) : (
         <button
-          onClick={() => setIsAdding(true)} // Show the form when button is clicked
-          className="w-full p-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition flex items-center justify-center"
+          onClick={() => setIsAdding(true)}
+          className="mb-6 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md"
         >
           <span className="mr-2 text-xl">+</span> Add another column
         </button>

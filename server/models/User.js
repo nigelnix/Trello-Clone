@@ -4,9 +4,12 @@ import bcrypt from "bcryptjs";
 // User Model
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
+      // <--- THIS MUST BE 'username', NOT 'name'
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "Username is required"], // Ensure this message is for 'Username'
+      unique: true,
+      trim: true,
     },
     email: {
       type: String,
@@ -17,7 +20,11 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minLength: [6, "Password musb be at least 6 characters"],
+      minLength: [6, "Password must be at least 6 characters"],
+    },
+    avatar: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true }
